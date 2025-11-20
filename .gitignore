@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+
+# Environment
+.env
+.venv
+venv/
+
+# Graph and data files
+reflection_graph.json
+test_graph.json
+
+# Daily reflections (user data)
+daily/*.md
+weekly/*.md
+weekly/context_memory.json
+
+# Test files
+test_*.py
+verify_*.py
+prototype_*.py
+backfill_*.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

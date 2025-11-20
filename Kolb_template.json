@@ -1,0 +1,111 @@
+{
+  "cycle_overview": {
+    "purpose": "Process a single, recent, specific, concise experience through reflection to abstraction and action, focusing on root-cause marginal gains.",
+    "guidelines": {
+      "experience_general": [
+        "Process-focused: Emphasize the process (e.g., steps leading to an outcome), not outcomes themselves.",
+        "Specific: Limit to one event/skill; use multiple cycles for broader reflections.",
+        "Recent: Within the last few weeks to minimize recall bias.",
+        "Concise: Experience description = 1 sentence; expand in later steps."
+      ],
+      "marginal_gains_emphasis": "Define marginal gains as small, achievable process improvements (e.g., 1% better trigger awareness). Adapt to user's competence level: unconscious (build awareness), conscious incompetence (practice specifics), competence (automate), unconscious competence (teach others)."
+    }
+  },
+  "step1_set_intention": {
+    "guidelines": ["Start here to frame the cycle. Use to guide mapping of unstructured input."],
+    "prompts": [
+      {
+        "id": "1.1",
+        "question": "What experience do you want to reflect on? (1 concise sentence, process-focused).",
+        "slot": "[User mapping or input excerpt]",
+        "marginal_gain_focus": "A marginal gain here could be clarifying the exact process bottleneck for targeted reflection."
+      },
+      {
+        "id": "1.2",
+        "question": "What would a marginal gain look like for this experience? (Tailor to your competence level).",
+        "slot": "[User mapping or input excerpt]",
+        "marginal_gain_focus": "Examples: Unconscious incompetence → 'Notice one trigger I ignored'; Conscious incompetence → 'Pause 10s before reacting to frustration'."
+      }
+    ]
+  },
+  "step2_reflection": {
+    "guidelines": [
+      "Chronological, detailed sequence. Heighten focus on emotions as indicators of process keys.",
+      "Be honest about responses; external triggers vs. internal 'why'."
+    ],
+    "prompts": [
+      {
+        "id": "2.1",
+        "question": "List and describe the sequence of events, in chronological order. (Bullet points for clarity).",
+        "slot": "[User mapping or input excerpt]",
+        "marginal_gain_focus": "A marginal gain: Pinpoint one 'fork' in the sequence where a small adjustment could alter the flow."
+      },
+      {
+        "id": "2.2",
+        "question": "How did you feel about the experience? (Specific: when, intensity, e.g., 'Frustrated at step X because...').",
+        "slot": "[User mapping or input excerpt]",
+        "marginal_gain_focus": "Emotions signal levers; a gain could be naming one feeling earlier to shorten recovery time."
+      },
+      {
+        "id": "2.3",
+        "question": "Which aspects (if any) of the process felt especially difficult? Which aspects felt like they went well? (Contrast for balance).",
+        "slot": "[User mapping or input excerpt]",
+        "marginal_gain_focus": "Highlight one 'well' aspect to replicate; one difficult to tweak slightly (e.g., 'Break step Y into 2 micro-steps')."
+      },
+      {
+        "id": "2.4",
+        "question": "How did you respond to challenges and difficulties during this process? (Mental/physical actions; honest, e.g., avoidance vs. persistence). Skip if no difficulties.",
+        "slot": "[User mapping or input excerpt]",
+        "marginal_gain_focus": "A gain: Experiment with one alternative response in simulation to build resilience incrementally."
+      },
+      {
+        "id": "2.5",
+        "question": "What were the triggers to you feeling the way you did? (External cues/events, e.g., 'Seeing the icon triggered procrastination').",
+        "slot": "[User mapping or input excerpt]",
+        "marginal_gain_focus": "Identify one trigger for preemptive neutralization (e.g., 'Hide icon → 5% less delay')."
+      },
+      {
+        "id": "2.6",
+        "question": "Why do you think you acted the way you did during this experience? (Metacognition: Internal drivers, e.g., 'Fear of failure drove avoidance').",
+        "slot": "[User mapping or input excerpt]",
+        "marginal_gain_focus": "Uncover one 'why' root to reframe (e.g., 'Shift from fear to curiosity → smoother process')."
+      }
+    ]
+  },
+  "step3_abstraction": {
+    "guidelines": [
+      "Analyze reflection for patterns/trends (habits, beliefs). Base on reflection data only—avoid unsupported theories to reduce bias.",
+      "If gaps: Suggest deepening reflection (more data points) or building self-awareness for future cycles.",
+      "Holistic view: Link to broader life patterns for scalable gains."
+    ],
+    "prompts": [
+      {
+        "id": "3.1",
+        "question": "What habits, beliefs, and tendencies can you identify from your reflection that explains why you acted the way you did? (e.g., 'Overwhelm → avoidance habit').",
+        "slot": "[User mapping or input excerpt]",
+        "marginal_gain_focus": "Target one tendency for root-level tweak (e.g., 'Interrupt overwhelm with 1-min breath → apply across scenarios')."
+      },
+      {
+        "id": "3.2",
+        "question": "Do you act or respond in similar ways in other parts of your life? (Examples to show holistic impact).",
+        "slot": "[User mapping or input excerpt]",
+        "marginal_gain_focus": "A gain: Spot one cross-life pattern to address systemically (e.g., 'Same avoidance in work/meetings → unified strategy')."
+      }
+    ]
+  },
+  "step4_experiment": {
+    "guidelines": [
+      "1-3 concise, specific, actionable experiments (e.g., 'If trigger X, then do Y for Z duration').",
+      "Vague → no; must be immediately executable. Limit to <4 for focus.",
+      "Tie directly to abstractions for root-cause testing."
+    ],
+    "prompts": [
+      {
+        "id": "4.1",
+        "question": "Based on abstractions, what 1-3 experiments will you run next time? (Actionable: If/then format; emphasize marginal gains).",
+        "slot": "[User mapping or input excerpt]",
+        "marginal_gain_focus": "Design for small wins: e.g., 'Test 1 new response in low-stakes scenario → measure 1% efficiency boost'."
+      }
+    ]
+  }
+}
