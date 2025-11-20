@@ -17,3 +17,14 @@ Responsibility: Critical integration points, external services, databases, messa
 *   **Storage Directories (`daily/`, `weekly/`)**
     *   **Role**: Database.
     *   **Criticality**: Created automatically if missing, but write permissions are required.
+
+## 3. LLM API Configuration
+*   **Timeout Settings**
+    *   **Current**: 120 seconds for all API calls (increased from 30s).
+    *   **Reason**: Full-session ingestion requires longer processing time.
+    *   **Location**: `LLM_reflection.py:138`, `ingestion_pipeline.py:75`.
+
+## 4. Known Issues \u0026 Workarounds
+*   **JSON Response Wrapping**: DeepSeek API wraps JSON in markdown code blocks (```json...```).
+    *   **Impact**: Breaks `json.loads()` if not stripped.
+    *   **Fix**: `_strip_markdown_json()` helper function removes markdown before parsing.

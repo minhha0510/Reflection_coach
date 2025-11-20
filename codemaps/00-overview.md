@@ -23,5 +23,5 @@ A CLI-based cognitive habit reflector that guides users through Kolb's Learning 
 *   **Data Format**: JSON (Graph & Templates), Markdown (Logs)
 
 ## Data Flow
-1.  **Daily**: User Input -> **Ingestion Pipeline** (Extract Nodes) -> **Graph Manager** (Update State) -> **Ego Walk** (Retrieve Context) -> LLM Guidance Loop -> Final Summary -> Markdown File
+1.  **Daily**: User Input -> LLM Guidance Loop -> **Ego Walk** (Retrieve Graph Context) -> Final Summary -> **Ingestion Pipeline** (Batch Extract Nodes/Edges from full session) -> **Graph Manager** (Update State) -> Markdown File
 2.  **Weekly**: Load last 7 days -> LLM Context -> Conversational Review -> Markdown File
