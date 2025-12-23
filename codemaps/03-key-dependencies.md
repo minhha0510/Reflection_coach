@@ -18,6 +18,11 @@ Responsibility: Critical integration points, external services, databases, messa
     *   **Role**: Database.
     *   **Criticality**: Created automatically if missing, but write permissions are required.
 
+*   **Weekly Context Memory (`weekly/context_memory.json`)**
+    *   **Role**: Persistent state for progressive weekly learning.
+    *   **Criticality**: Created automatically on first weekly review.
+    *   **Failure Impact**: Weekly reviews will start from scratch if missing (degraded experience, not fatal).
+
 ## 3. LLM API Configuration
 *   **Timeout Settings**
     *   **Current**: 120 seconds for all API calls (increased from 30s).

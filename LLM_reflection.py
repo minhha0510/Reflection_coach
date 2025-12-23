@@ -56,6 +56,9 @@ CONTEXT FROM LAST WEEK'S SUMMARY:
 CURRENT WEEK'S DATA:
 {current_data}
 
+RELEVANT PATTERNS FROM PAST REFLECTIONS:
+{graph_context}
+
 Goal: Help the user identify themes and connect them to last week's progress. 
 Ask exactly two insightful, connected questions at a time.
 """
@@ -236,6 +239,30 @@ key_takeaway: {data.get('key_takeaway')}
             history.append({"role": "assistant", "content": ai_msg})
 
             # Get Next Input
+            user_input = self._get_multiline_input("You")
+            
+            if user_input.strip().upper() in ['SAVE', 'DONE', 'EXIT']:
+                break
+        
+        # Summarize
+        print("\nGenerating Summary...")
+        full_text = "\n".join([f"{m['role']}: {m['content']}" for m in history])
+        summary_raw = self._call_llm(DAILY_SUMMARY_PROMPT, full_text)
+        
+        try:
+            # Clean up potential markdown formatting
+            summary_clean = self._strip_markdown_json(summary_raw)
+            data = json.loads(summary_clean)
+            self.save_daily_entry(data, full_text)
+        except:
+            print("Error parsing summary JSON. Saving raw text.")
+            self.save_daily_entry({}, full_text)
+
+        # 5. Post-Session Graph Ingestion
+        print("\n[Graph Manager] Ingesting full session into Psyche Graph...")
+        self.ingestion_pipeline.process_session(full_text)
+        self.graph_manager.save_graph()
+        print("[Graph Manager] Ingestion Complete.")
 
     def run_weekly_review(self):
         print("\n=== WEEKLY REVIEW & PROGRESSION ===")
@@ -255,18 +282,26 @@ key_takeaway: {data.get('key_takeaway')}
         user_input = "I'm ready to review my week."
         
         while True:
+        # Retrieve Graph Context (same as daily reflection)
+            anchors = self.graph_manager.find_nodes_by_text(user_input)
+            anchor_ids = [n['id'] for n in anchors]
+            graph_context = self.graph_manager.ego_walk(anchor_ids[:3]) if anchor_ids else "No specific past patterns found."
             # Inject context into system prompt
             sys_prompt = WEEKLY_SYSTEM_PROMPT.format(
                 prev_context=json.dumps(past_context), 
-                current_data=current_data[:2000] # Truncate if too large
+                current_data=current_data,
+                graph_context=graph_context
             )
             
+            ### LLM response 
             ai_msg = self._call_llm(sys_prompt, user_input, history)
             print(f"\nCoach: {ai_msg}")
             
+            ### Add to history
             history.append({"role": "user", "content": user_input})
             history.append({"role": "assistant", "content": ai_msg})
             
+            ### Get Next Input
             user_input = self._get_multiline_input("You")
             
             if user_input.strip().upper() in ['SAVE', 'DONE', 'EXIT']:
@@ -275,14 +310,20 @@ key_takeaway: {data.get('key_takeaway')}
         # 3. Generate Progression Summary
         print("\nCreating building blocks for next week...")
         full_text = "\n".join([f"{m['role']}: {m['content']}" for m in history])
-        
         summary_raw = self._call_llm(WEEKLY_SUMMARY_PROMPT, full_text)
+        
         try:
             summary_json = json.loads(summary_raw)
             self.save_weekly_context(summary_json)
             print(f"\nNext Week's Focus: {summary_json.get('focus_for_next_week')}")
         except:
             print("Could not generate structured weekly summary.")
+        
+        #4. Post-Session Graph Ingestion
+        print("\n[Graph Manager] Ingesting full session into Psyche Graph...")
+        self.ingestion_pipeline.process_session(full_text)
+        self.graph_manager.save_graph()
+        print("[Graph Manager] Ingestion Complete.")
 
 # --- MAIN ---
 

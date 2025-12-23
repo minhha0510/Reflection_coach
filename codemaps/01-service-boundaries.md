@@ -46,8 +46,17 @@ Responsibility: Every service / module, what it owns, what it must never touch, 
 *   **Rules**:
     *   `daily/`: Files named `YYYY-MM-DD-HHMMSS.md`. Contains structured YAML frontmatter + raw conversation.
     *   `weekly/`: Files named `Weekly-Review-YYYY-MM-DD.md`. Contains aggregated context + review conversation.
+    *   `weekly/context_memory.json`: Persistent memory of weekly summaries for progressive learning.
 
-### 4. External Services
+### 4. Visualization Module (`visualize_graph.py`)
+*   **Owns**:
+    *   Reading `reflection_graph.json`.
+    *   Generating `reflection_graph.html` with Vis.js interactive visualization.
+*   **Must Never**:
+    *   Modify the graph data.
+    *   Require runtime user interaction (runs as standalone script).
+
+### 5. External Services
 *   **DeepSeek API**:
     *   **Role**: Intelligence provider for conversation and summarization.
     *   **Contract**: JSON-RPC style chat completions.

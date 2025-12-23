@@ -1,5 +1,5 @@
 # Codemap: Knowledge Graph Schema (auto-maintained by LLM)
-Last updated: 2025-11-20
+Last updated: 2025-11-22
 Responsibility: Defines the ontology and reproduction steps for the Psyche Graph.
 
 ## 1. Core Ontology

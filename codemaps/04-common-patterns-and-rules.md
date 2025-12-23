@@ -43,9 +43,22 @@ data = json.loads(clean_json)
 ## 3. Error Handling
 
 ### Summary Generation Failures
+**CRITICAL**: Always handle LLM summary parsing failures gracefully.
+
+```python
+try:
+    summary_clean = self._strip_markdown_json(summary_raw)
+    data = json.loads(summary_clean)
+    self.save_daily_entry(data, full_text)
+except:
+    print("Error parsing summary JSON. Saving raw text.")
+    self.save_daily_entry({}, full_text)  # Empty dict as fallback
+```
+
 *   **Pattern**: Wrap JSON parsing in try/except
-*   **Fallback**: Always save with `None` values rather than crashing
-*   **Logging**: Print the raw response (truncated) for debugging
+*   **Fallback**: Pass empty dict `{}` to save function rather than crashing
+*   **Why**: Preserves the full conversation even if summary extraction fails
+*   **Location**: `run_daily_reflection()` and `run_weekly_review()`
 
 ## 4. File Structure
 
@@ -68,7 +81,40 @@ Standard import order:
 *   Format: NetworkX node-link JSON format
 *   **Do NOT** commit to git (in `.gitignore`)
 
+### Weekly Context Memory
+*   File: `weekly/context_memory.json`
+*   Purpose: Progressive learning between weekly reviews
+*   Contains: week_theme, major_wins, struggles, key_takeaway, focus_for_next_week
+*   Auto-created on first weekly review completion
+
 ### User Data Privacy
 *   Daily/weekly reflections contain personal data
 *   **Always** exclude from git via `.gitignore`
-*   Backfill script available: `backfill_graph.py`
+*   Test files blocked: `test_*.py`, `verify_*.py`, `prototype_*.py`, `backfill_*.py`
+
+## 6. Graph Context Integration
+
+### Ego Walk in Both Flows
+**RULE**: Weekly reviews now use graph context, same as daily reflections.
+
+```python
+# In both run_daily_reflection() and run_weekly_review():
+anchors = self.graph_manager.find_nodes_by_text(user_input)
+anchor_ids = [n['id'] for n in anchors]
+graph_context = self.graph_manager.ego_walk(anchor_ids[:3]) if anchor_ids else "No specific past patterns found."
+```
+
+*   **Daily**: Graph context injected into `DAILY_SYSTEM_PROMPT`
+*   **Weekly**: Graph context injected into `WEEKLY_SYSTEM_PROMPT` (added 2025-11-22)
+*   **Why**: Provides historical pattern awareness across all reflections, not just recent ones
+
+## 7. Visualization
+
+### Generating Graph HTML
+```bash
+python visualize_graph.py
+```
+*   Reads: `reflection_graph.json`
+*   Generates: `reflection_graph.html` (Vis.js interactive graph)
+*   Color scheme: Belief (Gold), Event (Green), Emotion (Pink), Person (Salmon)
+*   Opens automatically in default browser
