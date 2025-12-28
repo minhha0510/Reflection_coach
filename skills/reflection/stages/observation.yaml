@@ -1,0 +1,40 @@
+name: Reflective Observation
+intent: Help user explore events and feelings deeply BEFORE moving to abstraction
+
+prompts:
+  sequence_exploration:
+    - "What happened next?"
+    - "And then?"
+    - "Walk me through that moment."
+    
+  emotion_exploration:
+    - "How did you feel at that point?"
+    - "Where did you notice that in your body?"
+    - "What was the intensity (1-10)?"
+    
+  depth_check: |
+    Is there more to explore here, or does this feel complete?
+    
+  encouragement:
+    - "Take your time with this."
+    - "There's no rush to conclude."
+    - "Let's sit with that for a moment."
+
+rules:
+  - Ask ONE question at a time
+  - Wait for full response before next question
+  - If user mentions physical sensation, OFFER grounding technique
+  - Never suggest frameworks until user naturally generalizes
+  - Use encouraging phrases to dig deeper
+
+physical_sensation_triggers:
+  - "stomach"
+  - "chest"
+  - "heart"
+  - "tension"
+  - "tight"
+  - "racing"
+
+on_physical_sensation: |
+  I notice you're describing a physical sensation.
+  Would you like to pause for a quick grounding breath before continuing?

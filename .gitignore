@@ -11,20 +11,14 @@ __pycache__/
 .venv
 venv/
 
-# Graph and data files
-reflection_graph.json
-test_graph.json
+# Graph and data files (kept in data/)
+# These are machine-generated and user-specific
 
-# Daily reflections (user data)
-daily/*.md
-weekly/*.md
-weekly/context_memory.json
+# User data - EXCLUDE from GitHub (personal reflections)
+data/conversation_history/
 
-# Test files
-test_*.py
-verify_*.py
-prototype_*.py
-backfill_*.py
+# Test output
+tests/output/
 
 # IDE
 .vscode/
@@ -35,3 +29,7 @@ backfill_*.py
 # OS
 .DS_Store
 Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak

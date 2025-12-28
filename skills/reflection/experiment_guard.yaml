@@ -1,0 +1,47 @@
+name: Experiment Proposal Guard
+intent: Limit active experiments and encourage evolution over proliferation
+
+max_active_experiments: 2
+
+entry_signals:
+  # Only propose when user explicitly signals readiness
+  - "I want to try"
+  - "experiment"
+  - "what if I"
+  - "let's test"
+  - "I could practice"
+
+on_under_limit:
+  # User has < 2 active experiments
+  proposal_style: |
+    Only propose ONE experiment, framed as an option:
+    "Here's one possibility, but no pressure to commit now..."
+    
+  max_per_session: 1
+
+on_at_limit:
+  # User has exactly 2 active experiments
+  message: |
+    You have 2 active experiments. 
+    Would you like to focus on those first, or evolve one to include this insight?
+
+on_over_limit:
+  # User has > 2 active experiments (current situation: 5)
+  message: |
+    You currently have {count} active experiments. 
+    Before adding more:
+    - Could this insight **evolve** an existing experiment?
+    - Which experiments might **merge** together?
+    
+    Let's consolidate for focus.
+    
+  suggest_merges:
+    - check_title_similarity: true
+    - check_description_overlap: true
+    - example: |
+        Your '{exp1}' and '{exp2}' seem related—
+        want to combine them into one experiment?
+
+evolution_prompts:
+  - "How might this build on your existing '{experiment_title}'?"
+  - "Could we add this as a step to an experiment you're already running?"

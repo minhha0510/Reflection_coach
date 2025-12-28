@@ -1,0 +1,45 @@
+name: Experiment Management
+intent: Create, monitor, and log experiments for habit building and problem solving
+
+design_principles:
+  - "An Experiment must have: Title, Protocol, Success Criteria, Duration"
+  - "Experiments are registered via scripts/experiment_manager.py CLI"
+  - "Log results during daily reflections"
+  - "Iterate on failed experiments: simplify, redesign, or abandon"
+
+# When user wants to solve a recurring problem or build a habit, Design an Experiment
+experiment_template:
+  title: "Catchy and specific (e.g., 'Afternoon Resistance Rescope Protocol')"
+  protocol: "Precise, step-by-step instructions (1. do this, 2. say this)"
+  success_criteria: "Clear binary or qualitative signal (e.g., 'Felt relief within 2 mins')"
+  duration: "Usually 1-7 days"
+
+commands:
+  add: |
+    python scripts/experiment_manager.py add --title "..." --desc "..." --criteria "..."
+    
+    Example:
+    python scripts/experiment_manager.py add --title "Context Switch Breath" --desc "1. Close laptop. 2. Box breathe (4-4-4-4) for 1 minute. 3. State next task out loud." --criteria "Completed transition without scrolling phone."
+  
+  nudge: |
+    python scripts/experiment_manager.py nudge <EXPERIMENT_ID>
+    # Verify user understands the steps by running the protocol once
+  
+  log: |
+    python scripts/experiment_manager.py log <EXP_ID> --outcome success --score 2 --notes "Worked well, felt calmer."
+    # During Daily Reflections, check for active experiments and log immediately
+
+iteration_strategies:
+  on_failure:
+    - name: Simplification
+      description: "Make the experiment smaller or easier"
+    - name: Environment Design
+      description: "Reduce friction by changing surroundings"
+    - name: Abandonment
+      description: "Try a completely different approach"
+  
+  threshold: "If score < 0 repeatedly, modify the experiment"
+
+special_protocols:
+  - name: "Vent & Reframe"
+    description: "Built-in emotional regulation protocol, treated as standard experiment in UI"

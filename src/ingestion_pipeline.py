@@ -3,8 +3,8 @@ import os
 import requests
 from typing import List, Dict, Any
 from dotenv import load_dotenv
-from graph_manager import GraphManager
-from graph_schema import (
+from .graph_manager import GraphManager
+from .graph_schema import (
     Node, UserNode, BeliefNode, EventNode, EmotionNode, 
     TopicNode, UtteranceNode, DistortionNode, 
     Edge, EdgeType, NodeType
@@ -134,7 +134,7 @@ class IngestionPipeline:
             tgt_idx = e_data.get("target_index")
             edge_type_str = e_data.get("type")
             
-            if 0 <= src_idx < len(extracted_nodes) and 0 <= tgt_idx < len(extracted_nodes):
+            if src_idx is not None and tgt_idx is not None and 0 <= src_idx < len(extracted_nodes) and 0 <= tgt_idx < len(extracted_nodes):
                 src_node = extracted_nodes[src_idx]
                 tgt_node = extracted_nodes[tgt_idx]
                 

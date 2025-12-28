@@ -1,0 +1,19 @@
+name: Daily Reflection Flow
+description: Kolb cycle-based reflection with patience-focused pacing
+
+stages:
+  - grounding    # MANDATORY first
+  - experience
+  - observation
+  - abstraction
+  # experiment stage only when user signals readiness
+
+behavior_rules:
+  max_questions_per_turn: 1
+  encourage_depth_first: true
+  validate_before_advancing: true
+
+experiment_guardrails:
+  max_active_experiments: 2
+  require_user_signal: true
+  suggest_evolution_when_over_limit: true

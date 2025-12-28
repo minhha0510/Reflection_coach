@@ -2,7 +2,7 @@ import networkx as nx
 import json
 import os
 from typing import List, Optional, Dict, Any, Union
-from graph_schema import (
+from .graph_schema import (
     Node, Edge, NodeType, EdgeType,
     UserNode, BeliefNode, EventNode, EmotionNode, 
     TopicNode, UtteranceNode, DistortionNode, InquiryThreadNode
@@ -20,7 +20,7 @@ class GraphManager:
             try:
                 with open(self.storage_path, "r") as f:
                     data = json.load(f)
-                self.graph = nx.node_link_graph(data)
+                self.graph = nx.node_link_graph(data, link="edges")
                 print(f"Graph loaded from {self.storage_path}: {self.graph.number_of_nodes()} nodes, {self.graph.number_of_edges()} edges.")
             except Exception as e:
                 print(f"Error loading graph: {e}. Starting with an empty graph.")
@@ -31,7 +31,7 @@ class GraphManager:
 
     def save_graph(self):
         """Saves the current graph state to JSON."""
-        data = nx.node_link_data(self.graph)
+        data = nx.node_link_data(self.graph, link="edges")
         with open(self.storage_path, "w") as f:
             json.dump(data, f, indent=2)
         print(f"Graph saved to {self.storage_path}")
@@ -57,7 +57,7 @@ class GraphManager:
         results = []
         for node_id, data in self.graph.nodes(data=True):
             if data.get("type") == node_type.value:
-                results.append(data)
+                results.append({**data, 'id': node_id})
         return results
 
     def find_nodes_by_property(self, key: str, value: Any) -> List[Dict[str, Any]]:
@@ -65,7 +65,7 @@ class GraphManager:
         results = []
         for node_id, data in self.graph.nodes(data=True):
             if data.get(key) == value:
-                results.append(data)
+                results.append({**data, 'id': node_id})
         return results
 
     def find_nodes_by_text(self, text: str) -> List[Dict[str, Any]]:
@@ -84,7 +84,7 @@ class GraphManager:
             elif "name" in data: content = data["name"]
             
             if search_term in str(content).lower():
-                results.append(data)
+                results.append({**data, 'id': node_id})
         return results
 
     def ego_walk(self, anchor_node_ids: List[str], depth: int = 2) -> str:
@@ -168,7 +168,7 @@ class GraphManager:
                 edge_data = self.graph.get_edge_data(node_id, neighbor_id)
                 node_data = self.graph.nodes[neighbor_id]
                 results.append({
-                    "node": node_data,
+                    "node": {**node_data, 'id': neighbor_id},
                     "edge": edge_data,
                     "direction": "outgoing"
                 })
@@ -178,7 +178,7 @@ class GraphManager:
                 edge_data = self.graph.get_edge_data(neighbor_id, node_id)
                 node_data = self.graph.nodes[neighbor_id]
                 results.append({
-                    "node": node_data,
+                    "node": {**node_data, 'id': neighbor_id},
                     "edge": edge_data,
                     "direction": "incoming"
                 })

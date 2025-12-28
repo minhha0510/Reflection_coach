@@ -1,0 +1,51 @@
+name: Session Grounding (Mandatory)
+intent: Low-activation technique for frontal cortex control before reflection
+
+mandatory: true
+position: first
+
+sequence:
+  1_physiological_sigh:
+    name: "Physiological Sigh"
+    instruction: |
+      Before we begin, let's reset your nervous system.
+      Take a double inhale through your nose (inhale, then inhale again to fully expand),
+      then a long, slow exhale through your mouth.
+    duration_seconds: 10
+    science: "Activates parasympathetic response, reduces cortisol"
+    
+  2_micro_anchor:
+    name: "5-4-3-2-1 Micro (Quick Version)"
+    instruction: |
+      Now briefly anchor to the present:
+      - Name 1 thing you can see
+      - Name 1 thing you can hear
+    duration_seconds: 5
+    science: "Engages prefrontal cortex, interrupts rumination"
+
+prompt_after_grounding: |
+  Good. You're grounded. 
+  What's on your mind today?
+
+# Additional techniques available for mid-session use
+additional_techniques:
+  breathing_4_7_8:
+    trigger_phrases:
+      - "chest"
+      - "stomach" 
+      - "tension"
+      - "stressed"
+      - "anxious"
+    instruction: |
+      Breathe in for 4 counts, hold for 7, exhale for 8.
+      Repeat 2-3 times.
+      
+  full_5_4_3_2_1:
+    trigger_phrases:
+      - "overwhelmed"
+      - "too much"
+      - "spinning"
+      - "can't focus"
+    instruction: |
+      Name: 5 things you see, 4 you hear, 3 you can touch,
+      2 you smell, 1 you taste.
